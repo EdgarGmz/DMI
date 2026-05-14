@@ -1,6 +1,6 @@
 # Desarrollo Movil Integral (DMI)
 
-Repositorio base de la materia DMI con una app .NET MAUI llamada AppCRUD.
+Repositorio base de la materia DMI con una app .NET MAUI.
 
 ## 1. Stack del proyecto
 
