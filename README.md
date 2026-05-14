@@ -552,9 +552,8 @@ Dale una ⭐ en GitHub para ayudar a otros compañeros a encontrarlo.
 
 <div align="center">
 
-**Última actualización:** Enero 2025
+**Última actualización:** Mayo 2026
 
-**Hecho con ❤️ para la comunidad de DMI**
 
 [⬆️ Volver arriba](#-desarrollo-móvil-integral-dmi)
 
