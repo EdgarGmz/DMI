@@ -123,6 +123,10 @@ public partial class MainPage : ContentPage
                 txtEdad.Text = empleado.Edad.ToString();
                 txtTelefono.Text = empleado.Telefono.ToString();
             }
+            else
+            {
+                DisplayAlertAsync("Error", "No se pudo encontrar el empleado seleccionado.", "OK");
+            }
         }
     }
 
