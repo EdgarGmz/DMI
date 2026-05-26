@@ -17,6 +17,11 @@
             Clicked="btnAgregarP_Clicked"/>
 
         <Button
+            Text="Buscar Producto"
+            x:Name="btnBuscarP"
+            Clicked="btnBuscarP_Clicked"/>
+
+        <Button
             Text="Listar Producto"
             x:Name="btnListarP"
             Clicked="btnListarP_Clicked"/>

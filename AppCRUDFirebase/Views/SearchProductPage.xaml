@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AppCRUDFirebase.Views.SearchProductPage"
+             Title="SearchProductPage">
+
+    <ContentPage.Resources>
+        <!-- Estilos para los elementos de la página -->
+        <Style x:Key="LabelStyle" TargetType="Label">
+            <Setter Property="VerticalOptions" Value="Center"/>
+            <Setter Property="FontSize" Value="Medium"/>
+            <Setter Property="Margin" Value="0,0,10,0"/>
+        </Style>
+
+        <!-- Estilos para los botones -->
+        <Style x:Key="ButtonStyle" TargetType="Button">
+            <Setter Property="BackgroundColor" Value="Red"/>
+            <Setter Property="TextColor" Value="White"/>
+            <Setter Property="FontSize" Value="Medium"/>
+            <Setter Property="CornerRadius" Value="5"/>
+            <Setter Property="Padding" Value="10,5"/>
+            <Setter Property="VerticalOptions" Value="Center"/>
+            <Setter Property="WidthRequest" Value="68"/>
+            <Setter Property="HeightRequest" Value="35"/>
+        </Style>
+    </ContentPage.Resources>
+
+    <StackLayout Padding="20">
+        <Label 
+            Text="Buscar Producto"
+            FontSize="24"
+            HorizontalOptions="Center"/>
+        
+        <Entry 
+            x:Name="SearchEntry"
+            Placeholder="Buscar por nombre"/>
+
+        <Button
+            Text="Buscar"
+            x:Name="btnBuscar"
+            Clicked="btnBuscar_Clicked"/>
+
+        <Grid
+            Padding="5"
+            RowSpacing="0">
+
+            <BoxView
+                 Color="Blue"
+                 HeightRequest="30"
+                 VerticalOptions="Start"/>
+
+            <Grid
+                 ColumnDefinitions ="*,*,Auto"
+                 Padding="10"
+                 HorizontalOptions="Fill">
+
+                <Label
+                     Text="Nombre"
+                     Grid.Column="0"
+                     TextColor="White"
+                     FontAttributes="Bold"
+                     HorizontalOptions="Start"
+                     VerticalOptions="Center"/>
+
+                <Label
+                     Text="Precio"
+                     Grid.Column="1"
+                     TextColor="White"
+                     FontAttributes="Bold"
+                     HorizontalOptions="Start"
+                     VerticalOptions="Center"/>                
+            </Grid>
+        </Grid>
+
+        <!-- Lista de productos -->
+        <CollectionView
+            x:Name="ResultListView">
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Grid
+                     ColumnDefinitions="*,*,Auto"
+                     Padding="10"
+                     HorizontalOptions="Fill">
+
+                        <Label
+                             Text="{Binding Nombre}" 
+                             Grid.Column="0"
+                             Style="{StaticResource LabelStyle}"/>
+
+                        <Label
+                             Text="{Binding Precio}" 
+                             Grid.Column="1"
+                             Style="{StaticResource LabelStyle}"/>                        
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </StackLayout>
+</ContentPage>
