@@ -19,4 +19,9 @@ public partial class MainPage : ContentPage
     {
         await Navigation.PushAsync(new ListProductPage());
     }
+
+    private async void btnBuscarP_Clicked(object sender, EventArgs e)
+    {
+        await Navigation.PushAsync(new SearchProductPage());
+    }
 }
