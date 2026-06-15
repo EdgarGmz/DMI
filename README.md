@@ -14,6 +14,48 @@ En esta materia desarrollaremos aplicaciones multiplataforma durante el **décim
 
 ---
 
+## 🎨 Sistema Visual de Consulta
+
+Usa esta leyenda para ubicar rápido qué pasos seguir en clase y cuáles aplicar en tu equipo:
+
+| Color | Contexto | Uso |
+|------|----------|-----|
+| 🟦 Azul | Clase del profesor (Windows + Visual Studio) | Referencia de lo que se explica en aula |
+| 🟩 Verde | Tu entorno (macOS + VS Code) | Ruta recomendada para practicar en tu Mac |
+| 🟨 Amarillo | Comandos compartidos | Funciona en Windows/macOS/Linux con .NET |
+| 🟥 Rojo | Solución de errores | Diagnóstico rápido y corrección |
+
+### 🧭 Mapa rápido por plataforma
+
+- 🟦 **En clase:** Visual Studio + Windows (flujo guiado por el profesor)
+- 🟩 **En tu Mac:** VS Code + terminal + Xcode/Android Studio
+- 🟨 **Común a todos:** `dotnet restore`, `dotnet list package`, `dotnet add package`
+
+---
+
+## ⚡ Guía Ultra Rápida (10 comandos clave)
+
+Usa esta sección como acordeón de clase.
+
+| # | Objetivo | Comando |
+|---|----------|---------|
+| 1 | Verificar .NET instalado | `dotnet --version` |
+| 2 | Ver workloads instalados | `dotnet workload list` |
+| 3 | Crear app MAUI nueva | `dotnet new maui -n MiNuevaAppMaui` |
+| 4 | Entrar al proyecto | `cd MiNuevaAppMaui` |
+| 5 | Restaurar dependencias | `dotnet restore` |
+| 6 | Instalar paquete NuGet | `dotnet add package CommunityToolkit.Maui` |
+| 7 | Ver paquetes instalados | `dotnet list package` |
+| 8 | Compilar (sin ejecutar) Mac | `dotnet build -f net10.0-maccatalyst` |
+| 9 | Ejecutar en MacCatalyst | `dotnet build -t:Run -f net10.0-maccatalyst` |
+| 10 | Ejecutar en Android | `dotnet build -t:Run -f net10.0-android` |
+
+Atajo mental para memorizar:
+
+**Crear → Restaurar → Instalar → Listar → Compilar → Ejecutar**
+
+---
+
 ## 🛠️ Requisitos Previos
 
 Antes de empezar, asegúrate de tener instalado lo siguiente:
@@ -26,14 +68,18 @@ Para clonar el repositorio.
 ---
 
 ### ⚙️ 2. **.NET SDK 10** (o superior)
-Framework necesario para ejecutar aplicaciones .NET MAUI.
+Framework necesario para trabajar con proyectos .NET y .NET MAUI.
 
 🔗 **Descargar:** [dotnet.microsoft.com](https://dotnet.microsoft.com/download)
 
 ---
 
-### 💻 3. **Visual Studio Code**
-Editor recomendado en macOS para trabajar con MAUI por línea de comandos.
+### 💻 3. **Editor/IDE**
+
+Puedes trabajar con cualquiera de estas opciones según tu sistema operativo:
+- **Windows:** Visual Studio 2022 (con carga de trabajo de .NET MAUI) o VS Code
+- **macOS:** VS Code (recomendado en este repositorio)
+- **Linux:** VS Code para revisar código, documentación y gestión de proyectos .NET
 
 🔗 **Descargar:** [code.visualstudio.com](https://code.visualstudio.com/)
 
@@ -42,7 +88,30 @@ Editor recomendado en macOS para trabajar con MAUI por línea de comandos.
 - ✅ **C#**
 - ✅ **.NET Install Tool**
 
-### 🍎 4. **Xcode** (para iOS y MacCatalyst)
+---
+
+## 🖥️ Configuración por Sistema Operativo
+
+### 🪟 Windows
+
+- Instala **Visual Studio 2022** con la carga de trabajo **Desarrollo de aplicaciones móviles con .NET**.
+- Instala Android SDK/Emulador si ejecutarás Android.
+- Para ejecutar en Windows, usa target `net10.0-windows10.0.19041.0`.
+
+### 🍎 macOS
+
+- Instala VS Code y .NET SDK.
+- Para iOS/MacCatalyst, instala Xcode y acepta licencia.
+- Para Android, instala Android Studio con SDK y emulador.
+
+### 🐧 Linux
+
+- Puedes usar VS Code + .NET SDK para estudiar estructura, editar código y restaurar paquetes.
+- Para desarrollo y ejecución completa de apps .NET MAUI (Android/iOS/MacCatalyst/Windows), usa Windows o macOS.
+
+---
+
+### 🍎 4. **Xcode** (solo macOS, para iOS y MacCatalyst)
 
 Instala Xcode desde App Store y después ejecuta:
 
@@ -51,7 +120,7 @@ sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
 sudo xcodebuild -license accept
 ```
 
-### 🤖 5. **Android SDK + Emulador** (para Android)
+### 🤖 5. **Android SDK + Emulador** (Windows/macOS)
 
 Instala Android Studio, luego configura al menos:
 - Android SDK Platform
@@ -61,7 +130,76 @@ Instala Android Studio, luego configura al menos:
 
 ---
 
-## 🚀 Pasos Exactos para Iniciar un Nuevo Proyecto MAUI en VS Code (macOS)
+## 🧑‍🏫 Clase (Visual Studio) vs 🧑‍💻 Tu Mac (VS Code)
+
+Esta tabla te permite seguir la clase sin perderte, aunque uses otro entorno.
+
+| Paso | 🟦 Lo que hace el profesor (Windows/Visual Studio) | 🟩 Lo que haces tú (macOS/VS Code) |
+|------|-----------------------------------------------------|------------------------------------|
+| 1 | Crear proyecto MAUI desde Visual Studio | `dotnet new maui -n MiNuevaAppMaui` |
+| 2 | Abrir solución y restaurar paquetes automáticamente | `cd MiNuevaAppMaui` y `dotnet restore` |
+| 3 | Agregar paquete NuGet desde interfaz gráfica | `dotnet add package NOMBRE_PAQUETE` |
+| 4 | Revisar paquetes instalados desde NuGet Manager | `dotnet list package` |
+| 5 | Ejecutar en perfil Windows/Android/iOS | `dotnet build -t:Run -f net10.0-maccatalyst` (o Android/iOS) |
+| 6 | Corregir errores en Output/Errores | Revisar terminal y sección de troubleshooting de este README |
+
+Regla pedagógica: **mismo objetivo, diferente herramienta**.
+
+---
+
+## 🚀 Flujo General del Repositorio (Windows/macOS/Linux)
+
+### 📋 **Paso 1: Clonar el repositorio**
+
+```bash
+git clone https://github.com/EdgarGmz/DMI.git
+cd DMI
+```
+
+### 📦 **Paso 2: Restaurar dependencias**
+
+```bash
+dotnet restore
+```
+
+### ▶️ **Paso 3: Ejecutar un proyecto existente**
+
+Ejemplo con `AppCRUD`:
+
+```bash
+cd AppCRUD
+```
+
+Windows:
+
+```bash
+dotnet build -t:Run -f net10.0-windows10.0.19041.0
+```
+
+macOS (MacCatalyst):
+
+```bash
+dotnet build -t:Run -f net10.0-maccatalyst
+```
+
+Android (Windows/macOS, con emulador activo):
+
+```bash
+dotnet build -t:Run -f net10.0-android
+```
+
+---
+
+## 🍎 macOS + VS Code: Crear una App MAUI Nueva e Instalar NuGet
+
+Este apartado es exclusivo para macOS con VS Code, debido a que Visual Studio para Mac ya no es la opción actual del ecosistema.
+
+### ✅ Checklist rápido antes de empezar
+
+- [ ] `dotnet --version` funciona
+- [ ] `xcode-select -p` apunta a `.../Xcode.app/Contents/Developer`
+- [ ] Tienes Android Studio y un emulador creado (si usarás Android)
+- [ ] Estás dentro de la carpeta correcta del proyecto
 
 ### 📋 **Paso 1: Verificar instalación base de .NET**
 
@@ -81,7 +219,7 @@ dotnet workload install android ios maccatalyst
 
 ---
 
-### 🆕 **Paso 2: Crear el proyecto MAUI**
+### 🆕 **Paso 2: Crear una aplicación MAUI nueva**
 
 Ubícate en la carpeta donde guardarás tus proyectos y ejecuta:
 
@@ -117,6 +255,14 @@ dotnet restore
 
 ### 📦 **Paso 5: Instalar paquetes con NuGet (exacto)**
 
+| Acción | Comando |
+|--------|---------|
+| Instalar paquete | `dotnet add package CommunityToolkit.Maui` |
+| Instalar versión específica | `dotnet add package sqlite-net-pcl --version 1.9.172` |
+| Ver paquetes instalados | `dotnet list package` |
+| Quitar paquete | `dotnet remove package sqlite-net-pcl` |
+| Restaurar dependencias | `dotnet restore` |
+
 **A) Instalar un paquete:**
 
 ```bash
@@ -149,9 +295,49 @@ dotnet restore
 
 > 💡 Recomendación académica: instala paquetes uno por uno y documenta por qué lo agregaste.
 
+### ✅ **Regla para evitar conflictos de versiones (NU1605)**
+
+Aplica siempre esta secuencia al agregar paquetes:
+
+1. Instala el paquete:
+
+```bash
+dotnet add package NOMBRE_PAQUETE
+```
+
+2. Revisa dependencias resueltas:
+
+```bash
+dotnet list package
+```
+
+3. Si aparece degradación de paquete (downgrade), fija versión explícita del paquete en conflicto en tu `.csproj` con la versión mínima requerida por la dependencia.
+
+Ejemplo típico en MAUI:
+
+- `CommunityToolkit.Maui 14.2.0` requiere `Microsoft.Maui.Controls >= 10.0.60`
+- entonces debes mantener `Microsoft.Maui.Controls` en `10.0.60` o superior
+
+4. Valida de nuevo:
+
+```bash
+dotnet restore
+dotnet list package
+```
+
+Regla corta para memorizar:
+
+**Instalar → Listar → Ajustar versión → Restaurar → Listar**
+
 ---
 
-### ▶️ **Paso 6: Ejecutar por plataforma desde terminal**
+### ▶️ **Paso 6: Ejecutar la app desde terminal**
+
+| Plataforma | Comando |
+|------------|---------|
+| 🍎 MacCatalyst | `dotnet build -t:Run -f net10.0-maccatalyst` |
+| 🤖 Android | `dotnet build -t:Run -f net10.0-android` |
+| 📱 iOS | `dotnet build -t:Run -f net10.0-ios` |
 
 #### 🍎 MacCatalyst
 
@@ -179,52 +365,21 @@ dotnet build -t:Run -f net10.0-ios
 
 ```bash
 dotnet restore
-dotnet build
-dotnet build -t:Run -f net10.0-maccatalyst
 ```
 
----
+Usa el comando de ejecución según tu sistema operativo:
 
-## 📥 Clonar este repositorio (opcional para las actividades de clase)
+- **Windows:** `dotnet build -t:Run -f net10.0-windows10.0.19041.0`
+- **macOS:** `dotnet build -t:Run -f net10.0-maccatalyst`
+- **Android:** `dotnet build -t:Run -f net10.0-android`
 
-Si lo que quieres es trabajar sobre este repositorio de la materia:
+No uses el target de Windows en macOS; ese comando solo funciona en equipos con Windows.
 
-Abre **Terminal** y ejecuta:
-
-```bash
-git clone https://github.com/EdgarGmz/DMI.git
-```
-
-Entra a la carpeta del repositorio:
-
-```bash
-cd DMI
-```
-
-<details>
-<summary>💡 <b>¿Ya lo tienes clonado?</b></summary>
-
-Si ya clonaste el repositorio anteriormente, solo necesitas actualizarlo:
-
-```bash
-cd DMI
-git pull origin main
-```
-</details>
-
----
-
-```bash
-cd DMI
-dotnet restore
-```
-
-Para ejecutar un proyecto existente (ejemplo AppCRUD):
-
-```bash
-cd AppCRUD
-dotnet build -t:Run -f net10.0-maccatalyst
-```
+| Sistema operativo | Comando principal |
+|-------------------|-------------------|
+| Windows | `dotnet build -t:Run -f net10.0-windows10.0.19041.0` |
+| macOS | `dotnet build -t:Run -f net10.0-maccatalyst` |
+| Android | `dotnet build -t:Run -f net10.0-android` |
 
 ---
 
@@ -252,6 +407,8 @@ dotnet build -t:Run -f net10.0-maccatalyst
 
 ## ❓ Solución de Problemas Comunes
 
+> 🟥 Usa esta sección como "ruta de rescate" cuando un comando no funcione.
+
 ### ⚠️ **Error: "No se encuentra el workload de MAUI"**
 
 **💡 Solución:**
@@ -267,7 +424,6 @@ dotnet workload install maui
 **💡 Solución:**
 
 ```bash
-cd AppCRUD
 dotnet restore
 ```
 
@@ -284,9 +440,31 @@ dotnet restore
 
 **💡 Solución:**
 
+Si ves un error como:
+
+"A valid Xcode installation was not found at '/Library/Developer/CommandLineTools'"
+
+primero verifica la ruta activa:
+
+```bash
+xcode-select -p
+```
+
+Debe apuntar a una ruta similar a:
+
+`/Applications/Xcode.app/Contents/Developer`
+
+Si no apunta ahí, corrige con:
+
 ```bash
 sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
 sudo xcodebuild -license accept
+```
+
+Opcional (primera configuración de Xcode):
+
+```bash
+sudo xcodebuild -runFirstLaunch
 ```
 
 Luego reinicia terminal y vuelve a compilar.
@@ -297,7 +475,7 @@ Luego reinicia terminal y vuelve a compilar.
 
 **💡 Solución:**
 
-1. 📱 Verifica que tengas un emulador iniciado desde Android Studio (Device Manager).
+1. 📱 Verifica que tengas un emulador iniciado desde Android Studio (Device Manager) en Windows o macOS.
 
 2. ▶️ Crea o inicia un emulador con API reciente.
 
@@ -335,6 +513,8 @@ Instala los componentes de Android:
 dotnet workload install android
 ```
 
+Si persiste, verifica SDKs desde Android Studio y reinicia terminal.
+
 ---
 
 ### ⚠️ **El comando `dotnet` no se reconoce**
@@ -365,6 +545,8 @@ rm -rf bin obj
 dotnet restore
 dotnet build
 ```
+
+En Linux recuerda que puedes editar y gestionar paquetes .NET, pero para ejecutar aplicaciones MAUI completas se recomienda Windows o macOS.
 
 ---
 
