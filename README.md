@@ -10,15 +10,7 @@
 
 Este repositorio contiene las **actividades y proyectos** de la materia **Desarrollo Móvil Integral** utilizando **.NET MAUI**.
 
----
-
-## 📂 Actividades del Repositorio
-
-| 📁 Proyecto | 📝 Descripción | 🔗 Acceso |
-|------------|---------------|-----------|
-| **AppCRUD** | Aplicación CRUD con SQLite para gestión de empleados | [Ver código](./AppCRUD) |
-
-> 💡 **Nota:** Más actividades se agregarán conforme avance el cuatrimestre.
+En esta materia desarrollaremos aplicaciones multiplataforma durante el **décimo cuatrimestre** de la carrera **Ingeniería en Desarrollo y Gestión de Software** en la **Universidad Tecnológica Santa Catarina**, trabajando de forma guiada con el profesor para fortalecer fundamentos de arquitectura móvil, interfaces, persistencia de datos y despliegue.
 
 ---
 
@@ -40,23 +32,164 @@ Framework necesario para ejecutar aplicaciones .NET MAUI.
 
 ---
 
-### 💻 3. **Visual Studio 2022 o superior**
-IDE recomendado para desarrollo.
+### 💻 3. **Visual Studio Code**
+Editor recomendado en macOS para trabajar con MAUI por línea de comandos.
 
-🔗 **Descargar:** [Visual Studio Community](https://visualstudio.microsoft.com/) (gratis)
+🔗 **Descargar:** [code.visualstudio.com](https://code.visualstudio.com/)
 
-**Durante la instalación, selecciona:**
-- ✅ **Desarrollo de aplicaciones móviles con .NET** (incluye .NET MAUI)
-- ✅ **Windows 10/11 SDK**
-- ✅ **Android SDK y Emulador** (si quieres ejecutar en Android)
+**Extensiones recomendadas en VS Code:**
+- ✅ **C# Dev Kit**
+- ✅ **C#**
+- ✅ **.NET Install Tool**
+
+### 🍎 4. **Xcode** (para iOS y MacCatalyst)
+
+Instala Xcode desde App Store y después ejecuta:
+
+```bash
+sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
+sudo xcodebuild -license accept
+```
+
+### 🤖 5. **Android SDK + Emulador** (para Android)
+
+Instala Android Studio, luego configura al menos:
+- Android SDK Platform
+- Android SDK Command-line Tools
+- Android Emulator
+- Una imagen de sistema (por ejemplo API 34)
 
 ---
 
-## 🚀 Pasos para Ejecutar el Proyecto
+## 🚀 Pasos Exactos para Iniciar un Nuevo Proyecto MAUI en VS Code (macOS)
 
-### 📋 **Paso 1: Clonar el Repositorio**
+### 📋 **Paso 1: Verificar instalación base de .NET**
 
-Abre **PowerShell** o **Terminal** y ejecuta:
+Abre una terminal y ejecuta:
+
+```bash
+dotnet --version
+dotnet workload list
+```
+
+Si MAUI no aparece en la lista, instala workloads:
+
+```bash
+dotnet workload install maui
+dotnet workload install android ios maccatalyst
+```
+
+---
+
+### 🆕 **Paso 2: Crear el proyecto MAUI**
+
+Ubícate en la carpeta donde guardarás tus proyectos y ejecuta:
+
+```bash
+dotnet new maui -n MiNuevaAppMaui
+```
+
+Entra a la carpeta:
+
+```bash
+cd MiNuevaAppMaui
+```
+
+---
+
+### 💻 **Paso 3: Abrir el proyecto en VS Code**
+
+Desde la carpeta del proyecto:
+
+```bash
+code .
+```
+
+---
+
+### 📦 **Paso 4: Restaurar dependencias NuGet**
+
+```bash
+dotnet restore
+```
+
+---
+
+### 📦 **Paso 5: Instalar paquetes con NuGet (exacto)**
+
+**A) Instalar un paquete:**
+
+```bash
+dotnet add package CommunityToolkit.Maui
+```
+
+**B) Instalar una versión específica:**
+
+```bash
+dotnet add package sqlite-net-pcl --version 1.9.172
+```
+
+**C) Ver paquetes instalados en el proyecto:**
+
+```bash
+dotnet list package
+```
+
+**D) Quitar un paquete:**
+
+```bash
+dotnet remove package sqlite-net-pcl
+```
+
+**E) Restaurar nuevamente (si cambiaste paquetes):**
+
+```bash
+dotnet restore
+```
+
+> 💡 Recomendación académica: instala paquetes uno por uno y documenta por qué lo agregaste.
+
+---
+
+### ▶️ **Paso 6: Ejecutar por plataforma desde terminal**
+
+#### 🍎 MacCatalyst
+
+```bash
+dotnet build -t:Run -f net10.0-maccatalyst
+```
+
+#### 🤖 Android
+
+Primero inicia un emulador desde Android Studio. Después:
+
+```bash
+dotnet build -t:Run -f net10.0-android
+```
+
+#### 📱 iOS (solo en macOS con Xcode configurado)
+
+```bash
+dotnet build -t:Run -f net10.0-ios
+```
+
+---
+
+### 🔄 **Paso 7: Flujo recomendado en cada práctica**
+
+```bash
+dotnet restore
+dotnet build
+dotnet build -t:Run -f net10.0-maccatalyst
+```
+
+---
+
+## 📥 Clonar este repositorio (opcional para las actividades de clase)
+
+Si lo que quieres es trabajar sobre este repositorio de la materia:
+
+Abre **Terminal** y ejecuta:
 
 ```bash
 git clone https://github.com/EdgarGmz/DMI.git
@@ -81,154 +214,16 @@ git pull origin main
 
 ---
 
-### 🔧 **Paso 2: Instalar las Herramientas de .NET MAUI**
-
-**Verifica que tengas .NET instalado:**
-
 ```bash
-dotnet --version
-```
-
-> ✅ **Debería mostrar algo como:** `10.0.x` o superior
-
-**Instala las herramientas de MAUI:**
-
-```bash
-dotnet workload install maui
-```
-
-<details>
-<summary>🔄 <b>Actualizar workloads (si ya los tienes instalados)</b></summary>
-
-```bash
-dotnet workload update
-```
-</details>
-
----
-
-### 📦 **Paso 3: Restaurar Dependencias**
-
-Desde la carpeta raíz del repositorio, ejecuta:
-
-```bash
+cd DMI
 dotnet restore
 ```
 
-> ⏱️ **Esto puede tardar unos minutos la primera vez.**
-
----
-
-### ▶️ **Paso 4: Ejecutar la Aplicación**
-
-Elige la plataforma en la que quieres ejecutar:
-
----
-
-#### 🪟 **Opción A: Windows** (Recomendado para empezar)
-
-**Entra a la carpeta del proyecto:**
+Para ejecutar un proyecto existente (ejemplo AppCRUD):
 
 ```bash
 cd AppCRUD
-```
-
-**Ejecuta la aplicación:**
-
-```bash
-dotnet run --framework net10.0-windows10.0.19041.0
-```
-
-> 🎉 **¡Listo!** Se abrirá una ventana con la aplicación funcionando.
-
-<details>
-<summary>🏗️ <b>Compilar sin ejecutar</b></summary>
-
-Si solo quieres compilar sin ejecutar:
-
-```bash
-dotnet build --framework net10.0-windows10.0.19041.0
-```
-</details>
-
----
-
-#### 🤖 **Opción B: Android**
-
-**Método 1: Usando Visual Studio (Más fácil)**
-
-1. 🔵 Abre **Visual Studio 2022**
-2. 📂 Abre el proyecto: `DMI/AppCRUD/AppCRUD.csproj`
-3. 📱 En la barra superior, selecciona un **emulador de Android**
-4. ▶️ Presiona **F5** o haz clic en el botón de ejecutar
-
-**Método 2: Usando línea de comandos**
-
-```bash
-cd AppCRUD
-dotnet build --framework net10.0-android
-```
-
-> 📱 **Nota:** Necesitas tener un emulador de Android ejecutándose o un dispositivo conectado.
-
----
-
-#### 🍎 **Opción C: iOS/Mac**
-
-Para ejecutar en iOS necesitas:
-- 🖥️ Una Mac con Xcode instalado
-- 🔗 Configurar Visual Studio para conectarse a la Mac
-
-📚 **Guía completa:** [Documentación oficial de Microsoft](https://learn.microsoft.com/es-es/dotnet/maui/ios/)
-
----
-
-## 🎯 Guía Rápida con Visual Studio
-
-> 💡 **Recomendado para principiantes** - Interfaz gráfica más amigable
-
-### 📝 Pasos:
-
-1. 🔵 **Abre Visual Studio 2022**
-
-2. 📂 **Abre el proyecto:**
-   - Haz clic en **"Abrir un proyecto o solución"**
-   - Navega a: `DMI/AppCRUD/AppCRUD.csproj`
-   - Haz clic en **"Abrir"**
-
-3. ⏳ **Espera la restauración de paquetes**
-   - Mira la barra de estado en la parte inferior
-   - Verás: *"Restaurando paquetes NuGet..."*
-   - Espera a que termine (puede tardar unos minutos la primera vez)
-
-4. 🎮 **Selecciona la plataforma:**
-
-   En la barra superior, verás un menú desplegable:
-
-   | Opción | Para ejecutar en |
-   |--------|------------------|
-   | 🪟 **Windows Machine** | Tu computadora con Windows |
-   | 🤖 **Android Emulator** | Emulador de Android |
-   | 📱 **Android Device** | Dispositivo físico conectado |
-
-5. ▶️ **Ejecuta la aplicación:**
-   - Presiona **F5** en tu teclado
-   - O haz clic en el botón verde ▶️ de ejecutar
-
-6. ✅ **¡Listo!**
-   - La aplicación se abrirá automáticamente
-   - Si es la primera vez, puede tardar un poco en compilar
-
----
-
-### 🎨 Capturas de Visual Studio
-
-```
-Barra de herramientas:
-┌────────────────────────────────────────────────────────┐
-│ [Windows Machine ▼]  [Any CPU ▼]  [▶️ AppCRUD]        │
-└────────────────────────────────────────────────────────┘
-      ↑ Aquí seleccionas la plataforma
+dotnet build -t:Run -f net10.0-maccatalyst
 ```
 
 ---
@@ -285,14 +280,16 @@ dotnet restore
 
 ---
 
-### ⚠️ **Error: "No se encuentra el Windows SDK"**
+### ⚠️ **Error en iOS/MacCatalyst por Xcode no configurado**
 
 **💡 Solución:**
 
-1. 🔧 Abre **Visual Studio Installer**
-2. ⚙️ Haz clic en **"Modificar"** en tu instalación de Visual Studio
-3. ✅ Asegúrate de tener seleccionado **"Windows 10/11 SDK"**
-4. 💾 Haz clic en **"Modificar"** para instalar
+```bash
+sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
+sudo xcodebuild -license accept
+```
+
+Luego reinicia terminal y vuelve a compilar.
 
 ---
 
@@ -300,19 +297,16 @@ dotnet restore
 
 **💡 Solución:**
 
-1. 📱 Verifica que tengas un emulador iniciado:
-   ```
-   Visual Studio → Herramientas → Android → Android Device Manager
-   ```
+1. 📱 Verifica que tengas un emulador iniciado desde Android Studio (Device Manager).
 
-2. ▶️ Crea o inicia un emulador
+2. ▶️ Crea o inicia un emulador con API reciente.
 
 3. 🔄 Vuelve a intentar ejecutar
 
 <details>
 <summary>🔍 <b>Crear un nuevo emulador de Android</b></summary>
 
-1. Abre **Android Device Manager** en Visual Studio
+1. Abre **Device Manager** en Android Studio
 2. Haz clic en **"Nuevo dispositivo"**
 3. Selecciona un perfil (recomendado: **Pixel 5**)
 4. Descarga la imagen del sistema (Android 12 o superior)
@@ -365,7 +359,7 @@ Reinicia desde cero:
 dotnet clean
 
 # Elimina carpetas temporales
-Remove-Item -Recurse -Force bin, obj
+rm -rf bin obj
 
 # Restaura y compila
 dotnet restore
@@ -485,10 +479,10 @@ Si encuentras algún error o quieres mejorar el código:
 |----------|-----------|
 | **Materia** | Desarrollo Móvil Integral |
 | **Cuatrimestre** | Décimo |
-| **Carrera** | Desarrollo de Software |
+| **Carrera** | Ingeniería en Desarrollo y Gestión de Software |
 | **Universidad** | Tecnológica Santa Catarina |
-| **Profesor** | *(Agregar nombre)* |
-| **Periodo** | Enero - Abril 2025 |
+| **Profesor** | Profesor titular de la materia DMI |
+| **Periodo** | Décimo cuatrimestre |
 
 </div>
 
