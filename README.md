@@ -128,6 +128,37 @@ Instala Android Studio, luego configura al menos:
 - Android Emulator
 - Una imagen de sistema (por ejemplo API 34)
 
+#### 🟩 Configuración validada en este repositorio (macOS + VS Code)
+
+Si trabajas en macOS con terminal, este flujo ya fue validado para `AppGrabarAudio`:
+
+```bash
+# 1) Java + herramientas Android
+brew install --cask microsoft-openjdk@17 android-commandlinetools android-platform-tools
+
+# 2) Variables de entorno (zsh)
+export ANDROID_SDK_ROOT="/opt/homebrew/share/android-commandlinetools"
+export ANDROID_HOME="$ANDROID_SDK_ROOT"
+export JAVA_HOME="$(/usr/libexec/java_home -v 17)"
+export PATH="$JAVA_HOME/bin:$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$ANDROID_SDK_ROOT/platform-tools:$ANDROID_SDK_ROOT/emulator:$PATH"
+
+# 3) Licencias y paquetes mínimos del SDK
+yes | sdkmanager --sdk_root="$ANDROID_SDK_ROOT" --licenses
+sdkmanager --sdk_root="$ANDROID_SDK_ROOT" "platform-tools" "emulator" "platforms;android-36" "platforms;android-36.1" "build-tools;36.1.0" "system-images;android-36;google_apis;arm64-v8a"
+
+# 4) Crear AVD (una sola vez)
+echo no | avdmanager create avd -n Pixel_7_API_36 -k "system-images;android-36;google_apis;arm64-v8a" -d pixel_7
+
+# 5) Iniciar emulador
+"$ANDROID_SDK_ROOT/emulator/emulator" -avd Pixel_7_API_36
+```
+
+Luego, en la carpeta del proyecto:
+
+```bash
+dotnet build -t:Run -f net10.0-android
+```
+
 ---
 
 ## 🧑‍🏫 Clase (Visual Studio) vs 🧑‍💻 Tu Mac (VS Code)
@@ -492,6 +523,49 @@ Luego reinicia terminal y vuelve a compilar.
 6. Inicia el emulador haciendo clic en ▶️
 
 </details>
+
+#### 🟥 Error `XA5300`: No se encontró el directorio Android SDK
+
+Este error indica que .NET Android no encuentra un SDK válido.
+
+**💡 Solución rápida (macOS):**
+
+```bash
+brew install --cask microsoft-openjdk@17 android-commandlinetools android-platform-tools
+```
+
+Define variables de entorno y recarga terminal:
+
+```bash
+export ANDROID_SDK_ROOT="/opt/homebrew/share/android-commandlinetools"
+export ANDROID_HOME="$ANDROID_SDK_ROOT"
+export JAVA_HOME="$(/usr/libexec/java_home -v 17)"
+export PATH="$JAVA_HOME/bin:$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$ANDROID_SDK_ROOT/platform-tools:$ANDROID_SDK_ROOT/emulator:$PATH"
+```
+
+Instala paquetes del SDK:
+
+```bash
+yes | sdkmanager --sdk_root="$ANDROID_SDK_ROOT" --licenses
+sdkmanager --sdk_root="$ANDROID_SDK_ROOT" "platform-tools" "platforms;android-36" "platforms;android-36.1" "build-tools;36.1.0"
+```
+
+#### 🟥 Error `XA0010`: No hay ningún dispositivo disponible
+
+Este error ocurre cuando usas `-t:Run` sin un emulador/dispositivo activo.
+
+**💡 Solución:**
+
+```bash
+"$ANDROID_SDK_ROOT/emulator/emulator" -avd Pixel_7_API_36
+adb devices
+```
+
+Debes ver algo como `emulator-5554   device` antes de ejecutar:
+
+```bash
+dotnet build -t:Run -f net10.0-android
+```
 
 ---
 

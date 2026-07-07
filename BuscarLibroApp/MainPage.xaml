@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="BuscarLibroApp.MainPage">
+
+            <StackLayout Padding="10">
+                <Label
+                    Text="Buscar Libro"
+                    FontSize="Large"
+                    HorizontalOptions="Center" />
+
+                <Entry
+                    x:Name="queryEnter"
+                    Placeholder="Ingrese el nombre del libro"
+                    HorizontalOptions="FillAndExpand" />
+
+                <Button
+                    Text="Buscar"
+                    x:Name="btnBuscar"
+                    HorizontalOptions="Center"
+                    Clicked="btnBuscar_Clicked" />
+
+                <!-- ListView para mostrar los resultados de búsqueda -->
+                <ListView
+                    x:Name="booksListView"
+                    VerticalOptions="FillAndExpand" >
+
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <TextCell
+                                Text="{Binding VolumeInfo.Title}"
+                                Detail="{Binding VolumeInfo.Authors[0]}" />
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </StackLayout>
+
+</ContentPage>
