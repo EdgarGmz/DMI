@@ -4,6 +4,7 @@
 		<TargetFrameworks>net10.0-android</TargetFrameworks>
 		<TargetFrameworks Condition="!$([MSBuild]::IsOSPlatform('linux'))">$(TargetFrameworks);net10.0-ios;net10.0-maccatalyst</TargetFrameworks>
 		<TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net10.0-windows10.0.19041.0</TargetFrameworks>
+		<ValidateXcodeVersion>false</ValidateXcodeVersion>
 
 		<!-- Note for MacCatalyst:
 		The default runtime is maccatalyst-x64, except in Release config, in which case the default is maccatalyst-x64;maccatalyst-arm64.
@@ -70,5 +71,8 @@
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.0" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
 	</ItemGroup>
+	<Target Name="RemoveInvalidXattrs" BeforeTargets="_CodesignAppBundle" Condition="'$(IsMacEnabled)' == 'true' And '$(AppBundleDir)' != '' And Exists('$(AppBundleDir)')">
+		<Exec Command="xattr -rc &quot;$(AppBundleDir)&quot;" />
+	</Target>
 
 </Project>
