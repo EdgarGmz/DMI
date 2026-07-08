@@ -500,6 +500,57 @@ sudo xcodebuild -runFirstLaunch
 
 Luego reinicia terminal y vuelve a compilar.
 
+#### 🟥 Error: Versión de Xcode incompatible (.NET iOS exige una versión anterior)
+Si ves un error que indica que tu versión de .NET para iOS requiere una versión específica de Xcode (por ejemplo, exige Xcode 26.5 y tienes la 26.6), puedes omitir esta validación estricta agregando la propiedad `<ValidateXcodeVersion>false</ValidateXcodeVersion>` dentro del `<PropertyGroup>` de tu archivo `.csproj`.
+
+#### 🟥 Error: codesign falló con "resource fork, Finder information, or similar detritus not allowed"
+Este error de firma ocurre cuando los archivos del bundle contienen metadatos del Finder de macOS.
+
+**💡 Solución rápida:**
+1. Limpia los atributos extendidos del proyecto:
+   ```bash
+   xattr -cr .
+   ```
+2. Borra las carpetas de caché y recompila:
+   ```bash
+   rm -rf bin obj
+   dotnet build -f net10.0-ios
+   ```
+
+*Solución automatizada (Recomendada):* Puedes agregar esta tarea al final de tu `.csproj` (justo antes del cierre `</Project>`) para limpiar automáticamente los metadatos conflictivos antes de que se intente firmar el código:
+```xml
+<Target Name="RemoveInvalidXattrs" BeforeTargets="_CodesignAppBundle" Condition="'$(IsMacEnabled)' == 'true' And '$(AppBundleDir)' != '' And Exists('$(AppBundleDir)')">
+	<Exec Command="xattr -rc &quot;$(AppBundleDir)&quot;" />
+</Target>
+```
+
+#### 🟥 Error: "Failed to start launchd_sim: could not bind to session" (exit code 60)
+Ocurre cuando el servicio del simulador en segundo plano de macOS se congela o entra en un conflicto de bloqueos.
+
+**💡 Solución rápida:**
+1. Cierra el simulador y apaga todas las instancias:
+   ```bash
+   killall Simulator 2>/dev/null
+   xcrun simctl shutdown all 2>/dev/null
+   ```
+2. Fuerza el cierre del servicio `CoreSimulatorService` (se reiniciará limpio automáticamente al abrir la app):
+   ```bash
+   sudo killall -9 com.apple.CoreSimulator.CoreSimulatorService
+   ```
+3. Vuelve a abrir el simulador manualmente y ejecuta el build.
+
+#### 📱 Cómo abrir y apuntar a un simulador de iPhone específico (evitando iPad por defecto)
+Si al usar `dotnet build -t:Run` se abre un iPad por defecto o deseas seleccionar un simulador en particular:
+1. Lista tus dispositivos y sus identificadores (UDID):
+   ```bash
+   xcrun simctl list devices
+   ```
+2. Identifica tu simulador de iPhone preferido (por ejemplo, `iPhone 17`) y copia su UDID.
+3. Ejecuta el proyecto indicando explícitamente el UDID:
+   ```bash
+   dotnet build -t:Run -f net10.0-ios -p:_DeviceName=:v2:udid=TU_UDID_AQUI
+   ```
+
 ---
 
 ### ⚠️ **La aplicación de Android no se despliega**

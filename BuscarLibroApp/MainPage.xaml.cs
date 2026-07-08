@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+using System.Collections.ObjectModel;
+using System.Net;
 using Newtonsoft.Json;
 
 namespace BuscarLibroApp;
@@ -6,6 +7,7 @@ namespace BuscarLibroApp;
 public partial class MainPage : ContentPage
 {
 	private readonly ObservableCollection<Book> books;
+	private static readonly HttpClient httpClient = new HttpClient();
 
 	public MainPage()
 	{
@@ -17,25 +19,22 @@ public partial class MainPage : ContentPage
 	private async void btnBuscar_Clicked(object sender, EventArgs e)
 	{
 		// Obtener el término de búsqueda ingresado por el usuario
-		string? query = queryEnter.Text;
-		if(string.IsNullOrWhiteSpace(query))
+		string query = queryEnter.Text?.Trim() ?? string.Empty;
+		if (string.IsNullOrWhiteSpace(query))
 		{
 			await DisplayAlertAsync("Error", "Por favor ingrese el título del libro.", "OK");
 			return;
 		}
 
 		// Llamar al método para obtener los datos de los libros desde la API de Google Books
-		string? booksData = await GetBooksDataAsync(query);
-		if(booksData != null)
+		BooksResponse? booksResponse = await GetBooksDataAsync(query);
+		if (booksResponse != null)
 		{
-			// Deserializar la respuesta JSON en un objeto BooksResponse
-			var booksResponse = JsonConvert.DeserializeObject<BooksResponse>(booksData);
-
 			// Limpiar la colección ObservableCollection antes de agregar los nuevos libros
 			books.Clear();
 
 			// Agregar los libros obtenidos a la colección ObservableCollection
-			if (booksResponse?.Items != null)
+			if (booksResponse?.Items != null && booksResponse.Items.Length > 0)
 			{
 				foreach(var book in booksResponse.Items)
 				{
@@ -43,38 +42,50 @@ public partial class MainPage : ContentPage
 					books.Add(book);
 				}
 			}
+			else
+			{
+				await DisplayAlertAsync("Sin resultados", $"No se encontraron libros para: '{query}'.", "OK");
+			}
 		} 
 		else
 		{
-			await DisplayAlertAsync("Error", "No se encontraron libros para el término de búsqueda ingresado.", "OK");
+			await DisplayAlertAsync("Error", "No se pudieron obtener datos del servidor.", "OK");
 		}
 
 	}
 
-	private async Task<string?> GetBooksDataAsync(string query)
+	private async Task<BooksResponse?> GetBooksDataAsync(string query)
 	{
-		using (HttpClient client = new HttpClient())
+		string apiKey = "AIzaSyDdJIEMdZmyY3MUkOL45SsHH3-2r2ASbrQ";
+		try
 		{
-			try
-			{
-				// Construir la URL de la API de Google Books con el término de búsqueda
-				string url = $"https://www.googleapis.com/books/v1/volumes?q={Uri.EscapeDataString(query)}";
+			// Codificar el término evita búsquedas inválidas cuando hay espacios o caracteres especiales.
+			string encodedQuery = WebUtility.UrlEncode(query);
+			string url = $"https://www.googleapis.com/books/v1/volumes?q={encodedQuery}&maxResults=20&printType=books&key={apiKey}";
 
-				// Realizar la solicitud HTTP GET a la API de Google Books
-				HttpResponseMessage response = await client.GetAsync(url);
+			// Realizar la solicitud HTTP GET a la API de Google Books
+			HttpResponseMessage response = await httpClient.GetAsync(url);
+			string content = await response.Content.ReadAsStringAsync();
 
-				// Verificar si la respuesta fue exitosa
-				if (response.IsSuccessStatusCode)
-				{
-					// Leer el contenido de la respuesta como una cadena JSON
-					return await response.Content.ReadAsStringAsync();
-				}
-			}
-			catch (Exception ex)
+			if (!response.IsSuccessStatusCode)
 			{
-				// Mostrar un mensaje de error al usuario en caso de que ocurra una excepción
-				await DisplayAlertAsync("Error", $"Ocurrió un error al obtener los datos: {ex.Message}", "OK");				
+				await DisplayAlertAsync("Error de API", $"HTTP {(int)response.StatusCode}: {response.ReasonPhrase}\nDetalle: {content}", "OK");
+				return null;
 			}
+
+			var booksResponse = JsonConvert.DeserializeObject<BooksResponse>(content);
+			if (!string.IsNullOrWhiteSpace(booksResponse?.Error?.Message))
+			{
+				await DisplayAlertAsync("Error de API", booksResponse!.Error!.Message!, "OK");
+				return null;
+			}
+
+			return booksResponse;
+		}
+		catch (Exception ex)
+		{
+			// Mostrar un mensaje de error al usuario en caso de que ocurra una excepción
+			await DisplayAlertAsync("Excepción de Red", $"Ocurrió un error al obtener los datos: {ex.Message}", "OK");
 		}
 
 		return null;	
@@ -95,7 +106,14 @@ public partial class MainPage : ContentPage
 
 	public class BooksResponse
 	{
+		public int TotalItems { get; set; }
 		public Book[]? Items { get; set; }
+		public ApiError? Error { get; set; }
+	}
+
+	public class ApiError
+	{
+		public string? Message { get; set; }
 	}
 	
 }
